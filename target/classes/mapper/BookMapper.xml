@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scu.db.demo.mapper.BookMapper">
+    <resultMap id="book_resultmap" type="org.scu.db.demo.model.Book">
+        <id property="bookId" column="book_id"/>
+        <result property="edition" column="edition"/>
+        <result property="borrowduedate" column="borrowduedate"/>
+        <result property="borrowermemno" column="borrowermemno"/>
+        <result property="callnumber" column="callnumber"/>
+    </resultMap>
+
+    <resultMap id="title_resultmap" type="org.scu.db.demo.model.Title">
+        <id property="callnumber" column="CallNumber"/>
+        <result property="name" column="name"/>
+        <result property="isbn" column="isbn"/>
+        <result property="year" column="year"/>
+        <result property="publisher" column="publisher"/>
+    </resultMap>
+
+
+    <select id="queryBook" resultMap="book_resultmap">
+        select * from book;
+    </select>
+<!--    例子：查询每一图书的callnumber号和本数-->
+    <select id="query_call_and_count" resultType="map">
+        select callnumber, count(*) as call_num from book group by callnumber;
+    </select>
+
+    <select id="query_borrowed_book_id" resultType="Integer">
+        select Book_ID from book;
+    </select>
+
+    <select id="query_iliad_or_odyssey_Title" resultMap="title_resultmap">
+        SELECT *
+        FROM Title
+        WHERE Name IN ('Iliad','Odyssey');
+    </select>
+
+    <select id="query_count_call123" resultType="Integer">
+        SELECT COUNT(*)
+        FROM Title
+        WHERE CallNumber='Call123';
+    </select>
+
+    <select id="query_count_not_exceed_2_callnumber" resultType="String">
+        SELECT callnumber
+        FROM Book
+        GROUP BY callnumber
+        HAVING COUNT(Book_ID)&lt;=2;
+    </select>
+
+   
+
+
+</mapper>
+
+
+
